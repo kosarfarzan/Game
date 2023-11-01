@@ -8,12 +8,14 @@ public class YellowPlayerPiece : PlayerPiece
     // Start is called before the first frame update
     void Start()
     {
-        
+        MovePlayer();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void MovePlayer()
     {
-        
+        for (int i = 0; i < 4; i++)
+        {
+            transform.position = pathParent.CommanPathPoint[i].transform.position;
+        }
     }
 }

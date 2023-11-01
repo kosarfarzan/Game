@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-////Inheritance From PathPoint Script
 public class PathObjectParent : PathPoint
 {
     public PathPoint[] CommanPathPoint;

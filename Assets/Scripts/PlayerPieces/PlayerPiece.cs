@@ -6,6 +6,13 @@ public class PlayerPiece : MonoBehaviour
 {
     public bool moveNow;
     public int numberoOfStepsToMove;
+    public PathObjectParent pathParent;
+
+    private void Awake()
+    {
+        pathParent = FindObjectOfType<PathObjectParent>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
