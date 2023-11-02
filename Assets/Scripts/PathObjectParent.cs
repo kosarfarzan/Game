@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PathObjectParent : PathPoint
 {
+    //Making array to keep the pathpoints
     public PathPoint[] CommanPathPoint;
     public PathPoint[] RedPathPoint;
     public PathPoint[] BluePathPoint;
