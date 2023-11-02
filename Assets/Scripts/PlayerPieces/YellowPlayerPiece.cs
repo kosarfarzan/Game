@@ -8,24 +8,32 @@ public class YellowPlayerPiece : PlayerPiece
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(MoveStep_enm());
-        
+
     }
 
-    public void MovePlayer()
+    //Move when mouse click
+    public void OnMouseDown()
     {
-        for (int i = 0; i < 5; i++)
+        if(!isReady)
         {
-            transform.position = pathParent.CommanPathPoint[i].transform.position;
+            isReady = true;
+            transform.position = pathParent.CommanPathPoint[0].transform.position;
+            //when we click on piece, it goes on first pathpoint
+            numberOfStepsAlreadyMove = 1;
+            return;
         }
+        StartCoroutine(MoveStep_enm());
     }
-    //use to iterative the array
+
+    //use to iterative the array step by step, and everytime we click on piece, it moves.
     IEnumerator MoveStep_enm()
     {
-        for (int i = 0; i < 5; i++)
+        numberoOfStepsToMove = 5;
+        for (int i = numberOfStepsAlreadyMove; i < (numberOfStepsAlreadyMove + numberoOfStepsToMove); i++)
         {
             transform.position = pathParent.CommanPathPoint[i].transform.position;
-            yield return new WaitForSeconds(0.35f); 
+            yield return new WaitForSeconds(0.25f); 
         }
+        numberOfStepsAlreadyMove += numberoOfStepsToMove;
     }
 }

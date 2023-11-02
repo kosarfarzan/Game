@@ -5,7 +5,9 @@ using UnityEngine;
 public class PlayerPiece : MonoBehaviour
 {
     public bool moveNow;
+    public bool isReady;
     public int numberoOfStepsToMove;
+    public int numberOfStepsAlreadyMove;
     public PathObjectParent pathParent;
 
     private void Awake()
