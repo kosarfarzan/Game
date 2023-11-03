@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//Inheritance From PlayerPiece Script
+// Inheritance From PlayerPiece Script
 public class GreenPlayerPiece : PlayerPiece
 {
     // Start is called before the first frame update
@@ -11,9 +11,15 @@ public class GreenPlayerPiece : PlayerPiece
         
     }
 
-    // Update is called once per frame
-    void Update()
+    // Move when mouse click
+    public void OnMouseDown()
     {
-        
+        if (!isReady)
+        {
+            // This player pathParent is GreenPathPoint, so reads it's path from it
+            MakePlayerReadyToMove(pathParent.GreenPathPoint);
+            return;
+        }
+        MovePlayer(pathParent.GreenPathPoint);
     }
 }
