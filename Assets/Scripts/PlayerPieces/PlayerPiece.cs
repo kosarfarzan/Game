@@ -9,6 +9,7 @@ public class PlayerPiece : MonoBehaviour
     public int numberoOfStepsToMove;
     public int numberOfStepsAlreadyMove;
     public PathObjectParent pathParent;
+    Coroutine playerMovement;
 
     private void Awake()
     {
@@ -29,11 +30,11 @@ public class PlayerPiece : MonoBehaviour
         // When we click on piece, it goes on first pathpoint
         numberOfStepsAlreadyMove = 1;
     }
-   
+
     public void MovePlayer(PathPoint[] pathParent_)
     {
         //Make player to move by indexes of their specefic array
-        StartCoroutine(MoveStep_enm(pathParent_));
+        playerMovement = StartCoroutine(MoveStep_enm(pathParent_));
     }
 
     // Use to iterative the array step by step, and everytime we click on piece, it moves.
@@ -46,5 +47,13 @@ public class PlayerPiece : MonoBehaviour
             yield return new WaitForSeconds(0.25f);
         }
         numberOfStepsAlreadyMove += numberoOfStepsToMove;
+        // When player moved, we make the steps to 0 so it cant move until dice roll again
+        GameManager.gameManager.numberOfStepsToMove = 0;
+        GameManager.gameManager.canPlayerMove = true;
+
+        if (playerMovement!=null)
+        {
+            StopCoroutine("MoveStep_enm");
+        }
     }
 }

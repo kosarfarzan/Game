@@ -44,6 +44,9 @@ public class RollingDice : MonoBehaviour
             numberGot++;
             GameManager.gameManager.numberOfStepsToMove = numberGot;
 
+            // Add this to find which dice is rolling and we define a condition for players
+            GameManager.gameManager.rollingDice = this;
+
             numberSpriteHolder.gameObject.SetActive(true);
             rollingDiceAnimation.gameObject.SetActive(false);
 
