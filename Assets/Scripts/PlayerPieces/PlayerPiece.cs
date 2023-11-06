@@ -39,7 +39,7 @@ public class PlayerPiece : MonoBehaviour
     // Use to iterative the array step by step, and everytime we click on piece, it moves.
     IEnumerator MoveStep_enm(PathPoint[] pathParent_)
     {
-        numberoOfStepsToMove = 5;
+        numberoOfStepsToMove = GameManager.gameManager.numberOfStepsToMove;
         for (int i = numberOfStepsAlreadyMove; i < (numberOfStepsAlreadyMove + numberoOfStepsToMove); i++)
         {
             transform.position = pathParent_[i].transform.position;
