@@ -43,17 +43,44 @@ public class PlayerPiece : MonoBehaviour
         numberoOfStepsToMove = GameManager.gameManager.numberOfStepsToMove;
         for (int i = numberOfStepsAlreadyMove; i < (numberOfStepsAlreadyMove + numberoOfStepsToMove); i++)
         {
-            transform.position = pathParent_[i].transform.position;
-            yield return new WaitForSeconds(0.25f);
+            if (isPathAvailableToMove(numberoOfStepsToMove, numberOfStepsAlreadyMove, pathParent_))
+            {
+                transform.position = pathParent_[i].transform.position;
+                yield return new WaitForSeconds(0.25f);
+            }
+
         }
-        numberOfStepsAlreadyMove += numberoOfStepsToMove;
-        // When player moved, we make the steps to 0 so it cant move until dice roll again
-        GameManager.gameManager.numberOfStepsToMove = 0;
+
+        if (isPathAvailableToMove(numberoOfStepsToMove, numberOfStepsAlreadyMove, pathParent_))
+        {
+            numberOfStepsAlreadyMove += numberoOfStepsToMove;
+            // When player moved, we make the steps to 0 so it cant move until dice roll again
+            GameManager.gameManager.numberOfStepsToMove = 0;
+        }
+
         GameManager.gameManager.canPlayerMove = true;
 
-        if (playerMovement!=null)
+        if (playerMovement != null)
         {
             StopCoroutine("MoveStep_enm");
+        }
+    }
+
+    // When we reach the end steps, its calculate if lefted path was more than the dice number, the player cant move
+    bool isPathAvailableToMove(int numberOfStepsToMove, int numberOfStepsAlreadyMove, PathPoint[] pathParent_)
+    {
+        if (numberOfStepsToMove == 0)
+        {
+            return false;
+        }
+        int leftNumberOfPath = pathParent_.Length - numberOfStepsAlreadyMove;
+        if (leftNumberOfPath >= numberOfStepsToMove)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 }

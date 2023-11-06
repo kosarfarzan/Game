@@ -10,7 +10,7 @@ public class GreenPlayerPiece : PlayerPiece
     // Start is called before the first frame update
     void Start()
     {
-        greenHomeRollingDice = GetComponentInParent<LudoHome>().rollingDice;
+        greenHomeRollingDice = GetComponentInParent<GreenHome>().rollingDice;
     }
 
     // Move when mouse click
