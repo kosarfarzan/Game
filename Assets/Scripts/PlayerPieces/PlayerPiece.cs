@@ -10,6 +10,10 @@ public class PlayerPiece : MonoBehaviour
     public int numberOfStepsAlreadyMove;
     public PathObjectParent pathParent;
     Coroutine playerMovement;
+    public PathPoint previousPathPoint;
+    public PathPoint currentPathPoint;
+    
+
 
     private void Awake()
     {
@@ -29,6 +33,11 @@ public class PlayerPiece : MonoBehaviour
         transform.position = pathParent_[0].transform.position;
         // When we click on piece, it goes on first pathpoint
         numberOfStepsAlreadyMove = 1;
+
+        previousPathPoint = pathParent_[0];
+        currentPathPoint = pathParent_[0];
+        currentPathPoint.AddPlayerPiece(this);
+        GameManager.gameManager.AddPathPoint(currentPathPoint);
     }
 
     public void MovePlayer(PathPoint[] pathParent_)
@@ -56,6 +65,15 @@ public class PlayerPiece : MonoBehaviour
             numberOfStepsAlreadyMove += numberoOfStepsToMove;
             // When player moved, we make the steps to 0 so it cant move until dice roll again
             GameManager.gameManager.numberOfStepsToMove = 0;
+
+            // Remove first piece and add second piece in list, when 2 pieces reach one point
+            GameManager.gameManager.RemovePathPoint(previousPathPoint);
+            previousPathPoint.RemovePlayerPiece(this);
+            currentPathPoint = pathParent_[numberOfStepsAlreadyMove - 1];
+            currentPathPoint.AddPlayerPiece(this);
+            GameManager.gameManager.AddPathPoint(currentPathPoint);
+            previousPathPoint = currentPathPoint;
+
         }
 
         GameManager.gameManager.canPlayerMove = true;
