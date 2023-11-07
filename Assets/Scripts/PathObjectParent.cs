@@ -13,6 +13,8 @@ public class PathObjectParent : PathPoint
     [Header("Scale And Positioning Difrences")]
     public float[] scales;
     public float[] positionDifrence;
+    public PathPoint[] BasePoint;
+
     // Start is called before the first frame update
     void Start()
     {

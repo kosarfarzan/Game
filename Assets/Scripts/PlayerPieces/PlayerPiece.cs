@@ -12,9 +12,9 @@ public class PlayerPiece : MonoBehaviour
     Coroutine playerMovement;
     public PathPoint previousPathPoint;
     public PathPoint currentPathPoint;
-    
 
 
+    // Use Awake to initialize variables or states before the application starts
     private void Awake()
     {
         pathParent = FindObjectOfType<PathObjectParent>();
@@ -30,14 +30,19 @@ public class PlayerPiece : MonoBehaviour
     public void MakePlayerReadyToMove(PathPoint[] pathParent_)
     {
         isReady = true;
+        // Start point position
         transform.position = pathParent_[0].transform.position;
         // When we click on piece, it goes on first pathpoint
         numberOfStepsAlreadyMove = 1;
+        GameManager.gameManager.numberOfStepsToMove = 0;
 
+        // Adding pieces on a point to list
         previousPathPoint = pathParent_[0];
         currentPathPoint = pathParent_[0];
         currentPathPoint.AddPlayerPiece(this);
         GameManager.gameManager.AddPathPoint(currentPathPoint);
+
+        GameManager.gameManager.rollingDiceTransfer();
     }
 
     public void MovePlayer(PathPoint[] pathParent_)
@@ -49,9 +54,13 @@ public class PlayerPiece : MonoBehaviour
     // Use to iterative the array step by step, and everytime we click on piece, it moves.
     IEnumerator MoveStep_enm(PathPoint[] pathParent_)
     {
+        // Start moving after 0.15 sec
+        yield return new WaitForSeconds(0.15f);
         numberoOfStepsToMove = GameManager.gameManager.numberOfStepsToMove;
+        // Move from current point to goal point (by dice rolling)
         for (int i = numberOfStepsAlreadyMove; i < (numberOfStepsAlreadyMove + numberoOfStepsToMove); i++)
         {
+            // a condition for time wich piece reach the last points
             if (isPathAvailableToMove(numberoOfStepsToMove, numberOfStepsAlreadyMove, pathParent_))
             {
                 transform.position = pathParent_[i].transform.position;
@@ -63,10 +72,9 @@ public class PlayerPiece : MonoBehaviour
         if (isPathAvailableToMove(numberoOfStepsToMove, numberOfStepsAlreadyMove, pathParent_))
         {
             numberOfStepsAlreadyMove += numberoOfStepsToMove;
-            // When player moved, we make the steps to 0 so it cant move until dice roll again
-            GameManager.gameManager.numberOfStepsToMove = 0;
+            
 
-            // Remove first piece and add second piece in list, when 2 pieces reach one point
+            // Remove previous pathpoint and piece from list
             GameManager.gameManager.RemovePathPoint(previousPathPoint);
             previousPathPoint.RemovePlayerPiece(this);
             currentPathPoint = pathParent_[numberOfStepsAlreadyMove - 1];
@@ -74,9 +82,19 @@ public class PlayerPiece : MonoBehaviour
             GameManager.gameManager.AddPathPoint(currentPathPoint);
             previousPathPoint = currentPathPoint;
 
+            // Condition when dice is not eual to 6
+            if (GameManager.gameManager.numberOfStepsToMove!=6)
+            {
+                GameManager.gameManager.transferDice = true;
+            }
+            // When player moved, we make the steps to 0 so it cant move until dice roll again
+            GameManager.gameManager.numberOfStepsToMove = 0;
+
         }
 
         GameManager.gameManager.canPlayerMove = true;
+
+        GameManager.gameManager.rollingDiceTransfer();
 
         if (playerMovement != null)
         {

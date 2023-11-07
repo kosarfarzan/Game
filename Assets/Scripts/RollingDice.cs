@@ -10,8 +10,6 @@ public class RollingDice : MonoBehaviour
     [SerializeField] SpriteRenderer rollingDiceAnimation;
     [SerializeField] int numberGot;
 
-    public bool canDiceRoll = true;
-
     Coroutine generateRandomNumberDice;
 
     // Start is called before the first frame update
@@ -31,11 +29,13 @@ public class RollingDice : MonoBehaviour
         yield return new WaitForEndOfFrame();
 
         // when dice is rolling, disable the mousedown to prevent twice roll
-        if (canDiceRoll)
+        if (GameManager.gameManager.canDiceRoll)
         {
-            canDiceRoll = false;
+            GameManager.gameManager.canDiceRoll = false;
+            // When one plaer turns, other's dice will be disable
             numberSpriteHolder.gameObject.SetActive(false);
             rollingDiceAnimation.gameObject.SetActive(true);
+            // When dice rolled, its wait and then transfer
             yield return new WaitForSeconds(0.5f);
 
             // We create a random number and base on it, the sprite dice (1 to 6) will be shown
@@ -47,16 +47,45 @@ public class RollingDice : MonoBehaviour
             // Add this to find which dice is rolling and we define a condition for players
             GameManager.gameManager.rollingDice = this;
 
+            // Disable animaion after number of dice get ready
             numberSpriteHolder.gameObject.SetActive(true);
             rollingDiceAnimation.gameObject.SetActive(false);
 
-            canDiceRoll = true;
+            // If no piece was in game and dice wasnt eual to 6, dice will be transfer
+            if (GameManager.gameManager.numberOfStepsToMove != 6 && outPlayers() == 0)
+            {
+                // Wait for sec then dice will transfer
+                yield return new WaitForSeconds(0.5f);
+                GameManager.gameManager.transferDice = true;
+                GameManager.gameManager.rollingDiceTransfer();
+            }
+
+            // If generate number wasnt empty, that means we have step number to move, so dice rolling will be stop
             if (generateRandomNumberDice != null)
             {
                 StopCoroutine(RollDice());
             }
         }
+    }
 
-
+    // Base on list of dice, its will returns the sync piece
+    public int outPlayers()
+    {
+        if (GameManager.gameManager.rollingDice == GameManager.gameManager.rollingDiceList[0])
+        {
+            return GameManager.gameManager.yellowOutPlayer;
+        }
+        else if (GameManager.gameManager.rollingDice == GameManager.gameManager.rollingDiceList[1])
+        {
+            return GameManager.gameManager.redOutPlayer;
+        }
+        else if (GameManager.gameManager.rollingDice == GameManager.gameManager.rollingDiceList[2])
+        {
+            return GameManager.gameManager.greenOutPlayer;
+        }
+        else
+        {
+            return GameManager.gameManager.blueOutPlayer;
+        }
     }
 }

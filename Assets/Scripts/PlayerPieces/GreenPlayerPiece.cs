@@ -20,9 +20,10 @@ public class GreenPlayerPiece : PlayerPiece
         {
             if (!isReady)
             {
-                // If it is Yellow piece turns and it has number 6, then player starts to move
+                // If it is green piece turns and it has number 6, then player starts to move
                 if (GameManager.gameManager.rollingDice == greenHomeRollingDice && GameManager.gameManager.numberOfStepsToMove == 6 && GameManager.gameManager.canPlayerMove)
                 {
+                    GameManager.gameManager.greenOutPlayer += 1;
                     // This player pathParent is GreenPathPoint, so reads it's path from it
                     MakePlayerReadyToMove(pathParent.GreenPathPoint);
                     // When player get 6 and it is ready to move, we make the steps to 0 so it cant move until dice roll
