@@ -10,6 +10,9 @@ public class PathObjectParent : PathPoint
     public PathPoint[] BluePathPoint;
     public PathPoint[] GreenPathPoint;
     public PathPoint[] YellowPathPoint;
+    [Header("Scale And Positioning Difrences")]
+    public float[] scales;
+    public float[] positionDifrence;
     // Start is called before the first frame update
     void Start()
     {
