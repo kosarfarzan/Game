@@ -54,7 +54,7 @@ public class PathPoint : MonoBehaviour
         for (int i = playerPiece_.numberOfStepsAlreadyMove-1; i >= 0; i--)
         {
             playerPiece_.transform.position = pathPointToMoveOn_[i].transform.position;
-            yield return new WaitForSeconds(0.03f);
+            yield return new WaitForSeconds(0.06f);
         }
 
         playerPiece_.transform.position = pathObjectParent.BasePoint[BasePointPosition(playerPiece_.name)].transform.position;

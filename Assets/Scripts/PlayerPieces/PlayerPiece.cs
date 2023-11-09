@@ -72,21 +72,24 @@ public class PlayerPiece : MonoBehaviour
         if (isPathAvailableToMove(numberoOfStepsToMove, numberOfStepsAlreadyMove, pathParent_))
         {
             numberOfStepsAlreadyMove += numberoOfStepsToMove;
-            
+
 
             // Remove previous pathpoint and piece from list
             GameManager.gameManager.RemovePathPoint(previousPathPoint);
             previousPathPoint.RemovePlayerPiece(this);
             currentPathPoint = pathParent_[numberOfStepsAlreadyMove - 1];
-            currentPathPoint.AddPlayerPiece(this);
+            bool transfer = currentPathPoint.AddPlayerPiece(this);
+            currentPathPoint.RescaleAndRepostioningAllPlayerPiece();
             GameManager.gameManager.AddPathPoint(currentPathPoint);
             previousPathPoint = currentPathPoint;
 
             // Condition when dice is not eual to 6
-            if (GameManager.gameManager.numberOfStepsToMove!=6)
+            if (transfer && GameManager.gameManager.numberOfStepsToMove != 6)
             {
                 GameManager.gameManager.transferDice = true;
             }
+
+
             // When player moved, we make the steps to 0 so it cant move until dice roll again
             GameManager.gameManager.numberOfStepsToMove = 0;
 
