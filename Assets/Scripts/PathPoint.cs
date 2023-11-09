@@ -6,6 +6,7 @@ public class PathPoint : MonoBehaviour
 {
     public PathObjectParent pathObjectParent;
     public List<PlayerPiece> playerPieceList = new List<PlayerPiece>();
+    PathPoint[] pathPointToMoveOn_;
 
     // Start is called before the first frame update
     void Start()
@@ -13,36 +14,48 @@ public class PathPoint : MonoBehaviour
         pathObjectParent = GetComponentInParent<PathObjectParent>();
     }
 
-    // When a piece stay on a point, we add it in list, if they be 2, the sec one will delete the first one
+    // When a piece stay on a point, we add it in list, if they be 2, the sec one will delete the first one and the kicked piece 
     // Start
     public bool AddPlayerPiece(PlayerPiece playerPiece_)
     {
-        if (playerPieceList.Count == 1)
+        // If 2 pieces are in safe points, cant kick eachother out
+        if (!pathObjectParent.safePoint.Contains(this))
         {
-            string prePlayerPieceName = playerPieceList[0].name;
-            string currentPlayerPieceName = playerPiece_.name;
-            currentPlayerPieceName = currentPlayerPieceName.Substring(0, currentPlayerPieceName.Length - 4);
-
-            if (!prePlayerPieceName.Contains(currentPlayerPieceName))
+            if (playerPieceList.Count == 1)
             {
-                playerPieceList[0].isReady = false;
-                reverOnStart(playerPieceList[0]);
-                playerPieceList[0].numberOfStepsAlreadyMove = 0;
-                RemovePlayerPiece(playerPieceList[0]);
-                playerPieceList.Add(playerPiece_);
-                return false;
+                string prePlayerPieceName = playerPieceList[0].name;
+                string currentPlayerPieceName = playerPiece_.name;
+                currentPlayerPieceName = currentPlayerPieceName.Substring(0, currentPlayerPieceName.Length - 4);
+
+                if (!prePlayerPieceName.Contains(currentPlayerPieceName))
+                {
+                    playerPieceList[0].isReady = false;
+                    StartCoroutine(reverOnStart(playerPieceList[0]));
+                    playerPieceList[0].numberOfStepsAlreadyMove = 0;
+                    RemovePlayerPiece(playerPieceList[0]);
+                    playerPieceList.Add(playerPiece_);
+                    return false;
+                }
             }
         }
         addPlayer(playerPiece_);
         return true;
     }
 
-    void reverOnStart(PlayerPiece playerPiece_)
+    IEnumerator reverOnStart(PlayerPiece playerPiece_)
     {
-        if (playerPiece_.name.Contains("Yellow")) { GameManager.gameManager.yellowOutPlayer -= 1; }
-        else if(playerPiece_.name.Contains("Red")) { GameManager.gameManager.redOutPlayer -= 1; }
-        else if(playerPiece_.name.Contains("Green")) { GameManager.gameManager.greenOutPlayer -= 1; }
-        else { GameManager.gameManager.blueOutPlayer -= 1; }
+        if (playerPiece_.name.Contains("Yellow")) { GameManager.gameManager.yellowOutPlayer -= 1; pathPointToMoveOn_ = pathObjectParent.YellowPathPoint; } 
+        else if(playerPiece_.name.Contains("Red")) { GameManager.gameManager.redOutPlayer -= 1; pathPointToMoveOn_ = pathObjectParent.RedPathPoint; }
+        else if(playerPiece_.name.Contains("Green")) { GameManager.gameManager.greenOutPlayer -= 1; pathPointToMoveOn_ = pathObjectParent.GreenPathPoint; }
+        else { GameManager.gameManager.blueOutPlayer -= 1; pathPointToMoveOn_ = pathObjectParent.BluePathPoint; }
+
+
+        // When piece kicked, its go back to its home step by step(backward)
+        for (int i = playerPiece_.numberOfStepsAlreadyMove-1; i >= 0; i--)
+        {
+            playerPiece_.transform.position = pathPointToMoveOn_[i].transform.position;
+            yield return new WaitForSeconds(0.03f);
+        }
 
         playerPiece_.transform.position = pathObjectParent.BasePoint[BasePointPosition(playerPiece_.name)].transform.position;
      }

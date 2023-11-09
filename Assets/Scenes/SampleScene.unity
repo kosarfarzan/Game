@@ -4832,6 +4832,15 @@ MonoBehaviour:
   - {fileID: 1297770762}
   - {fileID: 1013834804}
   - {fileID: 606381736}
+  safePoint:
+  - {fileID: 1716427944}
+  - {fileID: 1553598016}
+  - {fileID: 1282504569}
+  - {fileID: 1106058997}
+  - {fileID: 2086495032}
+  - {fileID: 2123035243}
+  - {fileID: 1653258443}
+  - {fileID: 1729865228}
 --- !u!1 &1155901003
 GameObject:
   m_ObjectHideFlags: 0

@@ -14,6 +14,8 @@ public class PathObjectParent : PathPoint
     public float[] scales;
     public float[] positionDifrence;
     public PathPoint[] BasePoint;
+    public List<PathPoint> safePoint;
+
 
     // Start is called before the first frame update
     void Start()
