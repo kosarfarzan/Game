@@ -18,6 +18,13 @@ public class PathPoint : MonoBehaviour
     // Start
     public bool AddPlayerPiece(PlayerPiece playerPiece_)
     {
+
+        if (this.name == "CommanPathPoint")
+        {
+            addPlayer(playerPiece_);
+            complete(playerPiece_);
+            return false;
+        }
         // If 2 pieces are in safe points, cant kick eachother out
         if (!pathObjectParent.safePoint.Contains(this))
         {
@@ -87,6 +94,16 @@ public class PathPoint : MonoBehaviour
             playerPieceList.Remove(playerPiece_);
             RescaleAndRepostioningAllPlayerPiece();
         }
+    }
+
+     void complete(PlayerPiece playerPiece_)
+    {
+        int totalCompletePlayer;
+        if (playerPiece_.name.Contains("Yellow")) { GameManager.gameManager.yellowOutPlayer -= 1; totalCompletePlayer = GameManager.gameManager.yellowCompletePlayer += 1; }
+        else if (playerPiece_.name.Contains("Red")) { GameManager.gameManager.redOutPlayer -= 1; totalCompletePlayer = GameManager.gameManager.redCompletePlayer += 1; }
+        else if (playerPiece_.name.Contains("Green")) { GameManager.gameManager.greenOutPlayer -= 1; totalCompletePlayer = GameManager.gameManager.greenCompletePlayer += 1; }
+        else { GameManager.gameManager.blueOutPlayer -= 1; totalCompletePlayer = GameManager.gameManager.blueCompletePlayer += 1; }
+
     }
 
     // When 2 Pieces reach a same point, the will be rescale and resize

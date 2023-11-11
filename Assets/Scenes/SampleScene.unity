@@ -9703,6 +9703,16 @@ MonoBehaviour:
   redOutPlayer: 0
   greenOutPlayer: 0
   blueOutPlayer: 0
+  yellowCompletePlayer: 0
+  redCompletePlayer: 0
+  greenCompletePlayer: 0
+  blueCompletePlayer: 0
+  totalPlayerCanPlay: 0
+  playerHomes:
+  - {fileID: 35260076}
+  - {fileID: 877950826}
+  - {fileID: 1962575864}
+  - {fileID: 1379648882}
 --- !u!4 &2032560964
 Transform:
   m_ObjectHideFlags: 0

@@ -11,18 +11,26 @@ public class UIManager : MonoBehaviour
     {
         MainPannel.SetActive(false);
         GamePannel.SetActive(true);
+        //How many player get enabled
+        GameManager.gameManager.playerHomes[1].SetActive(false);
+        GameManager.gameManager.playerHomes[3].SetActive(false);
     }
 
     public void Twoplayer()
     {
         MainPannel.SetActive(false);
         GamePannel.SetActive(true);
+        //How many player get enabled
+        GameManager.gameManager.playerHomes[1].SetActive(false);
+        GameManager.gameManager.playerHomes[3].SetActive(false);
     }
 
     public void ThreePlayer()
     {
         MainPannel.SetActive(false);
         GamePannel.SetActive(true);
+        //How many player get enabled
+        GameManager.gameManager.playerHomes[3].SetActive(false);
     }
 
     public void FourPlayer()

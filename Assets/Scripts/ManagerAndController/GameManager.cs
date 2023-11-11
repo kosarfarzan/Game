@@ -16,6 +16,11 @@ public class GameManager : MonoBehaviour
     public int redOutPlayer;
     public int greenOutPlayer;
     public int blueOutPlayer;
+    public int yellowCompletePlayer;
+    public int redCompletePlayer;
+    public int greenCompletePlayer;
+    public int blueCompletePlayer;
+    public List<GameObject> playerHomes;
 
     private void Awake()
     {
