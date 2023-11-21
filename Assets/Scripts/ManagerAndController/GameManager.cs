@@ -56,26 +56,8 @@ public class GameManager : MonoBehaviour
             GameManager.gameManager.totalSix = 0;
             transferRollingDice();
         }
-        else
-        {
-            if (GameManager.gameManager.totalPlayerCanPlay == 1)
-            {
-                //For playing with computer
-                if (GameManager.gameManager.rollingDice == GameManager.gameManager.rollingDiceList[2])
-                {
-                    Invoke("Role", 0.4f);
-                }
-            }
-        }
-
-
         canDiceRoll = true;
         transferDice = false;
-    }
-
-    void Role()
-    {
-        rollingDiceList[2].MouseRole();
     }
 
     void transferRollingDice()
@@ -83,19 +65,7 @@ public class GameManager : MonoBehaviour
         int nextDice;
         if (GameManager.gameManager.totalPlayerCanPlay == 1)
         {
-            //For playing with computer
-            if (rollingDice == rollingDiceList[0])
-            {
-                rollingDiceList[0].gameObject.SetActive(false);
-                rollingDiceList[2].gameObject.SetActive(true);
-                // Invoke will recall a method after a specifiec time
-                Invoke("Role", 0.4f);
-            }
-            else
-            {
-                rollingDiceList[2].gameObject.SetActive(false);
-                rollingDiceList[0].gameObject.SetActive(true);
-            }
+
         }
         //Dice will be transfer between 2 player
         else if (GameManager.gameManager.totalPlayerCanPlay == 2)

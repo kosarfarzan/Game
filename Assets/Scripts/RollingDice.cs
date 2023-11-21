@@ -26,11 +26,6 @@ public class RollingDice : MonoBehaviour
         generateRandomNumberDice = StartCoroutine(RollDice());
     }
 
-    public void MouseRole()
-    {
-        generateRandomNumberDice = StartCoroutine(RollDice());
-    }
-
     IEnumerator RollDice()
     {
         // Yield use like retun and its good for long lists
@@ -104,8 +99,7 @@ public class RollingDice : MonoBehaviour
         }
     }
 
-
-    // Base on list of dice, its will returns the sync piece and Make playing automation
+    // Base on list of dice, its will returns the sync piece
     public void OutPlayers()
     {
         if (GameManager.gameManager.rollingDice == GameManager.gameManager.rollingDiceList[0])
@@ -134,29 +128,8 @@ public class RollingDice : MonoBehaviour
         }
     }
 
-    //Make playing automation
     public bool PlayerCanMove()
     {
-        if (GameManager.gameManager.totalPlayerCanPlay == 1)
-        {
-            if (GameManager.gameManager.rollingDice == GameManager.gameManager.rollingDiceList[2])
-            {
-                if (outPlayer>0)
-                {
-                    for (int i = 0; i < playerPiece.Count; i++)
-                    {
-                        if (playerPiece[i].isReady)
-                        {
-                            if (playerPiece[i].isPathAvailableToMove(GameManager.gameManager.numberOfStepsToMove, playerPiece[i].numberOfStepsAlreadyMove, currentPathPoint))
-                            {
-                                currentPlayerPiece = playerPiece[i];
-                                return true;
-                            }
-                        }
-                    }
-                }
-            }
-        }
         if (outPlayer == 1 && GameManager.gameManager.numberOfStepsToMove != 6)
         {
             for (int i = 0; i < playerPiece.Count; i++)
@@ -178,7 +151,6 @@ public class RollingDice : MonoBehaviour
         return false;
     }
 
-    //Make playing automation
     void ReadyToMove()
     {
         playerPiece[0].MakePlayerReadyToMove(currentPathPoint);
