@@ -106,7 +106,7 @@ public class PlayerPiece : MonoBehaviour
     }
 
     // When we reach the end steps, its calculate if lefted path was more than the dice number, the player cant move
-    public bool isPathAvailableToMove(int numberOfStepsToMove, int numberOfStepsAlreadyMove, PathPoint[] pathParent_)
+    bool isPathAvailableToMove(int numberOfStepsToMove, int numberOfStepsAlreadyMove, PathPoint[] pathParent_)
     {
         if (numberOfStepsToMove == 0)
         {

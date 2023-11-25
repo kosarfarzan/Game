@@ -9,7 +9,6 @@ public class UIManager : MonoBehaviour
 
     public void ComputerPlayer()
     {
-        GameManager.gameManager.totalPlayerCanPlay = 1;
         MainPannel.SetActive(false);
         GamePannel.SetActive(true);
         //How many player get enabled
@@ -19,7 +18,6 @@ public class UIManager : MonoBehaviour
 
     public void Twoplayer()
     {
-        GameManager.gameManager.totalPlayerCanPlay = 2;
         MainPannel.SetActive(false);
         GamePannel.SetActive(true);
         //How many player get enabled
@@ -29,7 +27,6 @@ public class UIManager : MonoBehaviour
 
     public void ThreePlayer()
     {
-        GameManager.gameManager.totalPlayerCanPlay = 3;
         MainPannel.SetActive(false);
         GamePannel.SetActive(true);
         //How many player get enabled
@@ -38,7 +35,6 @@ public class UIManager : MonoBehaviour
 
     public void FourPlayer()
     {
-        GameManager.gameManager.totalPlayerCanPlay = 4;
         MainPannel.SetActive(false);
         GamePannel.SetActive(true);
     }
