@@ -23,11 +23,17 @@ public class RollingDice : MonoBehaviour
 
     public void OnMouseDown()
     {
+        if (!GameManager.gameManager.canPlayerMove)
+            return;
+
         generateRandomNumberDice = StartCoroutine(RollDice());
     }
 
     public void MouseRole()
     {
+        if (!this.gameObject.activeSelf)
+            this.gameObject.SetActive(true);
+
         generateRandomNumberDice = StartCoroutine(RollDice());
     }
     
@@ -91,11 +97,17 @@ public class RollingDice : MonoBehaviour
                     // Wait for sec then dice will transfer
                     yield return new WaitForSeconds(0.5f);
                     GameManager.gameManager.transferDice = true;
+                    GameManager.gameManager.rollingDiceTransfer();
                 }
             }
-            GameManager.gameManager.rollingDiceTransfer();
 
-
+            if (GameManager.gameManager.numberOfStepsToMove != 6 && GameManager.gameManager.rollingDice == GameManager.gameManager.rollingDiceList[2] && GameManager.gameManager.totalPlayerCanPlay == 1)
+            {
+                // Wait for sec then dice will transfer
+                yield return new WaitForSeconds(0.5f);
+                GameManager.gameManager.transferDice = true;
+                GameManager.gameManager.rollingDiceTransfer();
+            }
 
             // If generate number wasnt empty, that means we have step number to move, so dice rolling will be stop
             if (generateRandomNumberDice != null)
