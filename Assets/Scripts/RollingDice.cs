@@ -10,7 +10,7 @@ public class RollingDice : MonoBehaviour
     [SerializeField] SpriteRenderer rollingDiceAnimation;
     [SerializeField] int numberGot;
     Coroutine generateRandomNumberDice;
-    int outPlayer;
+    int outPlayer, CompletePlayer;
     List<PlayerPiece> playerPiece;
     PathPoint[] currentPathPoint;
     public PlayerPiece currentPlayerPiece;
@@ -18,7 +18,7 @@ public class RollingDice : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+         
     }
 
     public void OnMouseDown()
@@ -36,8 +36,8 @@ public class RollingDice : MonoBehaviour
 
         generateRandomNumberDice = StartCoroutine(RollDice());
     }
-    
-    
+
+
     IEnumerator RollDice()
     {
         // Yield use like retun and its good for long lists
@@ -99,16 +99,19 @@ public class RollingDice : MonoBehaviour
                     GameManager.gameManager.transferDice = true;
                     GameManager.gameManager.rollingDiceTransfer();
                 }
+                // If the piece was in the game, but unable to move
+                else if (PlayersCanMove() == false)
+                {
+                    // Wait for sec then dice will transfer
+                    yield return new WaitForSeconds(0.5f);
+                    GameManager.gameManager.transferDice = true;
+                    GameManager.gameManager.rollingDiceTransfer();
+                }
+                else if (PlayersCanMove() && GameManager.gameManager.totalPlayerCanPlay == 1 && GameManager.gameManager.rollingDice == GameManager.gameManager.rollingDiceList[2])
+                {
+                    ReadyToMove();
+                }
             }
-
-            if (GameManager.gameManager.numberOfStepsToMove != 6 && GameManager.gameManager.rollingDice == GameManager.gameManager.rollingDiceList[2] && GameManager.gameManager.totalPlayerCanPlay == 1)
-            {
-                // Wait for sec then dice will transfer
-                yield return new WaitForSeconds(0.5f);
-                GameManager.gameManager.transferDice = true;
-                GameManager.gameManager.rollingDiceTransfer();
-            }
-
             // If generate number wasnt empty, that means we have step number to move, so dice rolling will be stop
             if (generateRandomNumberDice != null)
             {
@@ -126,24 +129,28 @@ public class RollingDice : MonoBehaviour
             playerPiece = GameManager.gameManager.yellowPlayerPieces;
             currentPathPoint = playerPiece[0].pathParent.YellowPathPoint;
             outPlayer = GameManager.gameManager.yellowOutPlayer;
+            CompletePlayer = GameManager.gameManager.yellowCompletePlayer;
         }
         else if (GameManager.gameManager.rollingDice == GameManager.gameManager.rollingDiceList[1])
         {
             playerPiece = GameManager.gameManager.redPlayerPieces;
             currentPathPoint = playerPiece[0].pathParent.RedPathPoint;
             outPlayer = GameManager.gameManager.redOutPlayer;
+            CompletePlayer = GameManager.gameManager.redCompletePlayer;
         }
         else if (GameManager.gameManager.rollingDice == GameManager.gameManager.rollingDiceList[2])
         {
             playerPiece = GameManager.gameManager.greenPlayerPieces;
             currentPathPoint = playerPiece[0].pathParent.GreenPathPoint;
             outPlayer = GameManager.gameManager.greenOutPlayer;
+            CompletePlayer = GameManager.gameManager.greenCompletePlayer;
         }
         else
         {
             playerPiece = GameManager.gameManager.bluePlayerPieces;
             currentPathPoint = playerPiece[0].pathParent.BluePathPoint;
             outPlayer = GameManager.gameManager.blueOutPlayer;
+            CompletePlayer = GameManager.gameManager.blueCompletePlayer;
         }
     }
 
@@ -184,7 +191,32 @@ public class RollingDice : MonoBehaviour
                 }
             }
         }
+        else if(outPlayer == 1 && CompletePlayer == 3 && GameManager.gameManager.numberOfStepsToMove == 6)
+        {
+            return true;
+        }
         else if (outPlayer == 0 && GameManager.gameManager.numberOfStepsToMove == 6)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    //Check if the pieces can move or not
+    public bool PlayersCanMove()
+    {
+        for (int i = 0; i < playerPiece.Count; i++)
+        {
+            if (playerPiece[i].isReady)
+            {
+                if (playerPiece[i].isPathAvailableToMove(GameManager.gameManager.numberOfStepsToMove, playerPiece[i].numberOfStepsAlreadyMove, currentPathPoint))
+                {
+                    return true;
+                }
+            }
+        }
+
+        if (outPlayer + CompletePlayer < 4 && GameManager.gameManager.numberOfStepsToMove == 6)
         {
             return true;
         }
@@ -194,7 +226,17 @@ public class RollingDice : MonoBehaviour
     //Make playing automation
     void ReadyToMove()
     {
-        playerPiece[0].MakePlayerReadyToMove(currentPathPoint);
+        int NextPiece = 0;
+        for (int i = 0; i < playerPiece.Count; i++)
+        {
+            if(playerPiece[i].Status == "Home")
+            {
+                NextPiece = i;
+                i = playerPiece.Count;
+            }
+        }
+
+        playerPiece[NextPiece].MakePlayerReadyToMove(currentPathPoint);
         if (GameManager.gameManager.rollingDice == GameManager.gameManager.rollingDiceList[0])
         {
             GameManager.gameManager.yellowOutPlayer += 1;
@@ -211,5 +253,7 @@ public class RollingDice : MonoBehaviour
         {
             GameManager.gameManager.blueOutPlayer += 1;
         }
+
+        playerPiece[NextPiece].Status = "Game";
     }
 }

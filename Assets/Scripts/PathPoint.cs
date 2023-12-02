@@ -56,6 +56,7 @@ public class PathPoint : MonoBehaviour
         else if(playerPiece_.name.Contains("Green")) { GameManager.gameManager.greenOutPlayer -= 1; pathPointToMoveOn_ = pathObjectParent.GreenPathPoint; }
         else { GameManager.gameManager.blueOutPlayer -= 1; pathPointToMoveOn_ = pathObjectParent.BluePathPoint; }
 
+        playerPiece_.Status = "Home";
 
         // When piece kicked, its go back to its home step by step(backward)
         for (int i = playerPiece_.numberOfStepsAlreadyMove-1; i >= 0; i--)
@@ -96,14 +97,15 @@ public class PathPoint : MonoBehaviour
         }
     }
 
-     void complete(PlayerPiece playerPiece_)
+    void complete(PlayerPiece playerPiece_)
     {
         int totalCompletePlayer;
         if (playerPiece_.name.Contains("Yellow")) { GameManager.gameManager.yellowOutPlayer -= 1; totalCompletePlayer = GameManager.gameManager.yellowCompletePlayer += 1; }
         else if (playerPiece_.name.Contains("Red")) { GameManager.gameManager.redOutPlayer -= 1; totalCompletePlayer = GameManager.gameManager.redCompletePlayer += 1; }
         else if (playerPiece_.name.Contains("Green")) { GameManager.gameManager.greenOutPlayer -= 1; totalCompletePlayer = GameManager.gameManager.greenCompletePlayer += 1; }
         else { GameManager.gameManager.blueOutPlayer -= 1; totalCompletePlayer = GameManager.gameManager.blueCompletePlayer += 1; }
-
+        playerPiece_.Status = "Complete";
+        playerPiece_.GetComponent<SpriteRenderer>().enabled = false;
     }
 
     // When 2 Pieces reach a same point, the will be rescale and resize

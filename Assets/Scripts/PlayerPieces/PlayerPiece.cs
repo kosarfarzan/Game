@@ -13,6 +13,8 @@ public class PlayerPiece : MonoBehaviour
     public PathPoint previousPathPoint;
     public PathPoint currentPathPoint;
 
+    public string Status = "Home"; // Home & Game & Complete
+
 
     // Use Awake to initialize variables or states before the application starts
     private void Awake()
@@ -30,6 +32,7 @@ public class PlayerPiece : MonoBehaviour
     public void MakePlayerReadyToMove(PathPoint[] pathParent_)
     {
         isReady = true;
+        Status = "Game";
         // Start point position
         transform.position = pathParent_[0].transform.position;
         // When we click on piece, it goes on first pathpoint
@@ -66,7 +69,6 @@ public class PlayerPiece : MonoBehaviour
                 transform.position = pathParent_[i].transform.position;
                 yield return new WaitForSeconds(0.25f);
             }
-
         }
 
         if (isPathAvailableToMove(numberoOfStepsToMove, numberOfStepsAlreadyMove, pathParent_))
