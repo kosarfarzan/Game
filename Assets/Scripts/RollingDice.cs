@@ -82,11 +82,32 @@ public class RollingDice : MonoBehaviour
             {
                 if (outPlayer == 0)
                 {
-                    ReadyToMove();
+                    if(isComputer() && GameManager.gameManager.ComputerMode == "Hard")
+                    {
+                        GameManager.gameManager.computer.SmartMove(currentPlayerPiece, currentPathPoint);
+                    }
+                    else
+                    {
+                        ReadyToMove();
+                    }
                 }
                 else
                 {
-                    currentPlayerPiece.MovePlayer(currentPathPoint);
+                    if(isComputer())
+                    {
+                        if(GameManager.gameManager.ComputerMode == "Easy")
+                        {
+                            currentPlayerPiece.MovePlayer(currentPathPoint);
+                        }
+                        else
+                        {
+                            GameManager.gameManager.computer.SmartMove(currentPlayerPiece, currentPathPoint);
+                        }
+                    }
+                    else
+                    {
+                        currentPlayerPiece.MovePlayer(currentPathPoint);
+                    }
                 }
             }
             else
@@ -107,9 +128,16 @@ public class RollingDice : MonoBehaviour
                     GameManager.gameManager.transferDice = true;
                     GameManager.gameManager.rollingDiceTransfer();
                 }
-                else if (PlayersCanMove() && GameManager.gameManager.totalPlayerCanPlay == 1 && GameManager.gameManager.rollingDice == GameManager.gameManager.rollingDiceList[2])
+                else if (PlayersCanMove() && isComputer())
                 {
-                    ReadyToMove();
+                    if (GameManager.gameManager.ComputerMode == "Hard")
+                    {
+                        GameManager.gameManager.computer.SmartMove(currentPlayerPiece, currentPathPoint);
+                    }
+                    else
+                    {
+                        ReadyToMove();
+                    }
                 }
             }
             // If generate number wasnt empty, that means we have step number to move, so dice rolling will be stop
@@ -226,7 +254,7 @@ public class RollingDice : MonoBehaviour
     //Make playing automation
     void ReadyToMove()
     {
-        int NextPiece = 0;
+        int NextPiece = -1;
         for (int i = 0; i < playerPiece.Count; i++)
         {
             if(playerPiece[i].Status == "Home")
@@ -235,25 +263,41 @@ public class RollingDice : MonoBehaviour
                 i = playerPiece.Count;
             }
         }
+        if(NextPiece >= 0)
+        {
+            playerPiece[NextPiece].MakePlayerReadyToMove(currentPathPoint);
+            if (GameManager.gameManager.rollingDice == GameManager.gameManager.rollingDiceList[0])
+            {
+                GameManager.gameManager.yellowOutPlayer += 1;
+            }
+            else if (GameManager.gameManager.rollingDice == GameManager.gameManager.rollingDiceList[1])
+            {
+                GameManager.gameManager.redOutPlayer += 1;
+            }
+            else if (GameManager.gameManager.rollingDice == GameManager.gameManager.rollingDiceList[2])
+            {
+                GameManager.gameManager.greenOutPlayer += 1;
+            }
+            else
+            {
+                GameManager.gameManager.blueOutPlayer += 1;
+            }
 
-        playerPiece[NextPiece].MakePlayerReadyToMove(currentPathPoint);
-        if (GameManager.gameManager.rollingDice == GameManager.gameManager.rollingDiceList[0])
-        {
-            GameManager.gameManager.yellowOutPlayer += 1;
-        }
-        else if (GameManager.gameManager.rollingDice == GameManager.gameManager.rollingDiceList[1])
-        {
-            GameManager.gameManager.redOutPlayer += 1;
-        }
-        else if (GameManager.gameManager.rollingDice == GameManager.gameManager.rollingDiceList[2])
-        {
-            GameManager.gameManager.greenOutPlayer += 1;
+            playerPiece[NextPiece].Status = "Game";
         }
         else
         {
-            GameManager.gameManager.blueOutPlayer += 1;
+            //GameManager.gameManager.transfer05();
         }
+    }
 
-        playerPiece[NextPiece].Status = "Game";
+    // Checking whether it is the computer's turn or not
+    bool isComputer()
+    {
+        if(GameManager.gameManager.totalPlayerCanPlay == 1 && GameManager.gameManager.rollingDice == GameManager.gameManager.rollingDiceList[2])
+        {
+            return true;
+        }
+        return false;
     }
 }

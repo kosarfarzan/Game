@@ -124,4 +124,37 @@ public class PlayerPiece : MonoBehaviour
             return false;
         }
     }
+
+    // Reset the piece
+    public void ResetPiece()
+    {
+        if(Status != "Home")
+        {
+            transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
+            transform.position = pathParent.BasePoint[BasePointPosition(name)].transform.position;
+
+            GetComponent<SpriteRenderer>().enabled = true;
+
+            isReady = false;
+            moveNow = false;
+            numberoOfStepsToMove = 0;
+            numberOfStepsAlreadyMove = 0;
+            previousPathPoint = null;
+            currentPathPoint.playerPieceList = new List<PlayerPiece>();
+            currentPathPoint = null;
+            Status = "Home";
+        }
+    }
+
+    int BasePointPosition(string name)
+    {
+        for (int i = 0; i < pathParent.BasePoint.Length; i++)
+        {
+            if (pathParent.BasePoint[i].name == name)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
 }

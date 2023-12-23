@@ -55,6 +55,10 @@ public class PathPoint : MonoBehaviour
         else if(playerPiece_.name.Contains("Red")) { GameManager.gameManager.redOutPlayer -= 1; pathPointToMoveOn_ = pathObjectParent.RedPathPoint; }
         else if(playerPiece_.name.Contains("Green")) { GameManager.gameManager.greenOutPlayer -= 1; pathPointToMoveOn_ = pathObjectParent.GreenPathPoint; }
         else { GameManager.gameManager.blueOutPlayer -= 1; pathPointToMoveOn_ = pathObjectParent.BluePathPoint; }
+        if(GameManager.gameManager.numberOfStepsToMove != 6 && GameManager.gameManager.totalPlayerCanPlay == 1 && GameManager.gameManager.rollingDice == GameManager.gameManager.rollingDiceList[2])
+        {
+            GameManager.gameManager.transferDice = true;
+        }
 
         playerPiece_.Status = "Home";
 
@@ -106,6 +110,11 @@ public class PathPoint : MonoBehaviour
         else { GameManager.gameManager.blueOutPlayer -= 1; totalCompletePlayer = GameManager.gameManager.blueCompletePlayer += 1; }
         playerPiece_.Status = "Complete";
         playerPiece_.GetComponent<SpriteRenderer>().enabled = false;
+        if (GameManager.gameManager.numberOfStepsToMove != 6)
+        {
+            GameManager.gameManager.transferDice = true;
+        }
+        GameManager.gameManager.CheckWinner(playerPiece_);
     }
 
     // When 2 Pieces reach a same point, the will be rescale and resize
@@ -116,24 +125,26 @@ public class PathPoint : MonoBehaviour
         int extent = plsCount / 2;
         int counter = 0;
         int spriteLayer = 0;
-        if (isOdd)
+        if(name != "CommanPathPoint")
         {
-            // Until the number of pieces, it will be resize, odd pieces
-            for (int i = -extent; i <= extent; i++)
+            if (isOdd)
             {
-                playerPieceList[counter].transform.localScale = new Vector3(pathObjectParent.scales[plsCount - 1], pathObjectParent.scales[plsCount], 1f);
-                playerPieceList[counter].transform.position = new Vector3(transform.position.x + (i * pathObjectParent.positionDifrence[plsCount - 1]), transform.position.y, 0f);
 
+                // Until the number of pieces, it will be resize, odd pieces
+                for (int i = -extent; i <= extent; i++)
+                {
+                    playerPieceList[counter].transform.localScale = new Vector3(pathObjectParent.scales[plsCount - 1], pathObjectParent.scales[plsCount], 1f);
+                    playerPieceList[counter].transform.position = new Vector3(transform.position.x + (i * pathObjectParent.positionDifrence[plsCount - 1]), transform.position.y, 0f);
+                }
             }
-        }
-        else
-        {
-            // Until the number of pieces, it will be resize, even pieces
-            for (int i = -extent; i < extent; i++)
+            else
             {
-                playerPieceList[counter].transform.localScale = new Vector3(pathObjectParent.scales[plsCount - 1], pathObjectParent.scales[plsCount], 1f);
-                playerPieceList[counter].transform.position = new Vector3(transform.position.x + (i * pathObjectParent.positionDifrence[plsCount - 1]), transform.position.y, 0f);
-
+                // Until the number of pieces, it will be resize, even pieces
+                for (int i = -extent; i < extent; i++)
+                {
+                    playerPieceList[counter].transform.localScale = new Vector3(pathObjectParent.scales[plsCount - 1], pathObjectParent.scales[plsCount], 1f);
+                    playerPieceList[counter].transform.position = new Vector3(transform.position.x + (i * pathObjectParent.positionDifrence[plsCount - 1]), transform.position.y, 0f);
+                }
             }
         }
 

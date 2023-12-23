@@ -7,13 +7,16 @@ public class UIManager : MonoBehaviour
     public GameObject MainPannel;
     public GameObject GamePannel;
 
-    public void ComputerPlayer()
+    public void ComputerPlayer(string Mode)
     {
+        GameManager.gameManager.ComputerMode = Mode;
         GameManager.gameManager.totalPlayerCanPlay = 1;
         MainPannel.SetActive(false);
         GamePannel.SetActive(true);
         //How many player get enabled
+        GameManager.gameManager.playerHomes[0].SetActive(true);
         GameManager.gameManager.playerHomes[1].SetActive(false);
+        GameManager.gameManager.playerHomes[2].SetActive(true);
         GameManager.gameManager.playerHomes[3].SetActive(false);
     }
 
@@ -23,7 +26,9 @@ public class UIManager : MonoBehaviour
         MainPannel.SetActive(false);
         GamePannel.SetActive(true);
         //How many player get enabled
+        GameManager.gameManager.playerHomes[0].SetActive(true);
         GameManager.gameManager.playerHomes[1].SetActive(false);
+        GameManager.gameManager.playerHomes[2].SetActive(true);
         GameManager.gameManager.playerHomes[3].SetActive(false);
     }
 
@@ -33,6 +38,9 @@ public class UIManager : MonoBehaviour
         MainPannel.SetActive(false);
         GamePannel.SetActive(true);
         //How many player get enabled
+        GameManager.gameManager.playerHomes[0].SetActive(true);
+        GameManager.gameManager.playerHomes[1].SetActive(true);
+        GameManager.gameManager.playerHomes[2].SetActive(true);
         GameManager.gameManager.playerHomes[3].SetActive(false);
     }
 
@@ -41,6 +49,10 @@ public class UIManager : MonoBehaviour
         GameManager.gameManager.totalPlayerCanPlay = 4;
         MainPannel.SetActive(false);
         GamePannel.SetActive(true);
+        GameManager.gameManager.playerHomes[0].SetActive(true);
+        GameManager.gameManager.playerHomes[1].SetActive(true);
+        GameManager.gameManager.playerHomes[2].SetActive(true);
+        GameManager.gameManager.playerHomes[3].SetActive(true);
     }
 
 }
