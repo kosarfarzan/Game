@@ -7,14 +7,17 @@ public class Computer
     // Move according to smart decisions
     public void SmartMove(PlayerPiece currentPlayerPiece_, PathPoint[] pathParent_)
     {
+        // dice = 6
         if(GameManager.gameManager.numberOfStepsToMove == 6)
         {
+            //no piece is in the game
             if(GameManager.gameManager.greenOutPlayer == 0)
             {
                 ReadyToMove(pathParent_);
             }
             else
             {
+                //if it was in danger or it can attack another piece, it will move
                 if (inDanger())
                 {
                     DangerPiece.MovePlayer(pathParent_);
@@ -31,10 +34,12 @@ public class Computer
         }
         else
         {
+            // if dice != 6 and one piece was in game, it will move
             if(GameManager.gameManager.greenOutPlayer == 1)
             {
                 currentPlayerPiece_.MovePlayer(pathParent_);
             }
+            // if it was more then one piece in the game, it will move when it was in danger or able to attack another piece
             else
             {
                 if (inDanger())
@@ -45,6 +50,7 @@ public class Computer
                 {
                     AttackPiece.MovePlayer(pathParent_);
                 }
+                //find the nearest piece to the winner point and move it
                 else
                 {
                     int number = Prioritize(pathParent_);
@@ -71,10 +77,12 @@ public class Computer
         {
             for (int a = 0; a < 4; a++)
             {
+                //the number of steps that piece move
                 int GreenNumberMove = GameManager.gameManager.greenPlayerPieces[i].numberOfStepsAlreadyMove;
 
                 int YellowNumberMove = GameManager.gameManager.yellowPlayerPieces[a].numberOfStepsAlreadyMove;
 
+                //yellow or green piece moved but it is before green/yellow home
                 if (YellowNumberMove < 26 && YellowNumberMove != 0)
                 {
                     YellowNumberMove += 26;
@@ -84,11 +92,14 @@ public class Computer
                     GreenNumberMove += 26;
                 }
 
+                //if their distance was betweeun 0 and 5 and green piece was forward the yellow piece
                 if (GreenNumberMove - YellowNumberMove <= 5 && GreenNumberMove - YellowNumberMove > 0 && GreenNumberMove > YellowNumberMove)
                 {
+                    // bigger then 52 it id in winner point
                     if(GreenNumberMove < 52 && YellowNumberMove < 52)
                     {
                         DangerPiece = GameManager.gameManager.greenPlayerPieces[i];
+                        //if it wasnt in safepoint it is danger
                         if (!DangerPiece.currentPathPoint.pathObjectParent.safePoint.Contains(DangerPiece.currentPathPoint))
                         {
                             return true;
@@ -113,6 +124,7 @@ public class Computer
 
                 int YellowNumberMove = GameManager.gameManager.yellowPlayerPieces[a].numberOfStepsAlreadyMove;
 
+                //curent yellow piece ha we checking
                 PlayerPiece Target = GameManager.gameManager.yellowPlayerPieces[a];
 
                 if (YellowNumberMove < 26 && YellowNumberMove != 0)
@@ -124,10 +136,12 @@ public class Computer
                     GreenNumberMove += 26;
                 }
 
+                //if distance between yellow and green piece will be 0 when its plus with dice number
                 if (GreenNumberMove - YellowNumberMove + GameManager.gameManager.numberOfStepsToMove == 0)
                 {
                     if (GreenNumberMove < 52 && YellowNumberMove < 52)
                     {
+                        //curent green piece ha we checking
                         AttackPiece = GameManager.gameManager.greenPlayerPieces[i];
                         if (!Target.currentPathPoint.pathObjectParent.safePoint.Contains(Target.currentPathPoint))
                         {
@@ -143,10 +157,12 @@ public class Computer
     // Selection of the piece according to its priority
     int Prioritize(PathPoint[] pathParent_)
     {
+        //get the piece list of computer
         List<PlayerPiece> playerPiece = GameManager.gameManager.greenPlayerPieces;
 
         int max = 0;
         int number = 0;
+        //find the piece that pass more points
         for (int i = 0; i < 4; i++)
         {
             if(playerPiece[i].numberOfStepsAlreadyMove > max && playerPiece[i].Status == "Game")
@@ -158,6 +174,7 @@ public class Computer
                 }
             }
         }
+        //all of the piece are in same point
         if(max == 0)
         {
             number = RandomSelect(pathParent_);
@@ -185,7 +202,9 @@ public class Computer
     void ReadyToMove(PathPoint[] currentPathPoint)
     {
         List<PlayerPiece> playerPiece = GameManager.gameManager.greenPlayerPieces;
+        // if NextPiece var is = -1 it means all of the ieces are in the game
         int NextPiece = -1;
+        //checking the pieces and enter the piece which is in the home
         for (int i = 0; i < playerPiece.Count; i++)
         {
             if (playerPiece[i].Status == "Home")
@@ -194,6 +213,7 @@ public class Computer
                 i = playerPiece.Count;
             }
         }
+        // if NextPiece >= 0 it means it has pieces in its home
         if (NextPiece >= 0)
         {
             playerPiece[NextPiece].MakePlayerReadyToMove(currentPathPoint);
@@ -202,6 +222,7 @@ public class Computer
 
             playerPiece[NextPiece].Status = "Game";
         }
+        //if the pieces can't move, the dice will be transfer
         else
         {
             int number = Prioritize(currentPathPoint);

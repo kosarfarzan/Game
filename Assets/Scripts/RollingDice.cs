@@ -21,6 +21,7 @@ public class RollingDice : MonoBehaviour
          
     }
 
+    //By mouse click. the dice will role
     public void OnMouseDown()
     {
         if (!GameManager.gameManager.canPlayerMove)
@@ -78,6 +79,7 @@ public class RollingDice : MonoBehaviour
 
             OutPlayers();
 
+            //which part should start
             if (PlayerCanMove())
             {
                 if (outPlayer == 0)
@@ -149,7 +151,7 @@ public class RollingDice : MonoBehaviour
     }
 
 
-    // Base on list of dice, its will returns the sync piece and Make playing automation
+    //it finds the dice whose turn it is and receives values
     public void OutPlayers()
     {
         if (GameManager.gameManager.rollingDice == GameManager.gameManager.rollingDiceList[0])

@@ -49,6 +49,7 @@ public class PathPoint : MonoBehaviour
         return true;
     }
 
+    // Get back the kicked piece to the home
     IEnumerator reverOnStart(PlayerPiece playerPiece_)
     {
         if (playerPiece_.name.Contains("Yellow")) { GameManager.gameManager.yellowOutPlayer -= 1; pathPointToMoveOn_ = pathObjectParent.YellowPathPoint; } 
@@ -101,6 +102,7 @@ public class PathPoint : MonoBehaviour
         }
     }
 
+    // when pieces win
     void complete(PlayerPiece playerPiece_)
     {
         int totalCompletePlayer;

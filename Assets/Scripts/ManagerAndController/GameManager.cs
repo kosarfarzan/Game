@@ -122,9 +122,12 @@ public class GameManager : MonoBehaviour
         {
             for (int i = 0; i < 3; i++)
             {
+                //which dice is active
                 if (rollingDice == rollingDiceList[i])
                 {
+                    //if it was he las player's turn, dice will be transfer to player one.
                     if (i == 2) { nextDice = 0; } else { nextDice = i + 1; }
+                    // when a player has win, dice should pass from it.
                     nextDice = Pasoute(nextDice);
                     if (nextDice == 3) { nextDice = 0; }
                     rollingDiceList[i].gameObject.SetActive(false);
@@ -216,9 +219,11 @@ public class GameManager : MonoBehaviour
         }
         else if(totalPlayerCanPlay == 3)
         {
+            //when the last green piece enter the last point.
             if (greenCompletePlayer == 4 && playerPiece_.name.Contains("Green"))
             {
                 WinNum++;
+                //UI
                 win[WinNum].GetComponent<Image>().color = Color.green;
                 win[WinNum].transform.GetChild(0).GetComponent<Text>().text = "Player" + (WinNum + 1);
                 win[2].SetActive(false);
@@ -319,7 +324,7 @@ public class GameManager : MonoBehaviour
         rollingDiceList[3].gameObject.SetActive(false);
     }
 
-    // Reset the pieces
+    // Reset the pieces to their home
     void ResetPiece()
     {
         for (int i = 0; i < 4; i++)

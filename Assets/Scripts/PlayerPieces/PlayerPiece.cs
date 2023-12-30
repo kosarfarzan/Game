@@ -71,6 +71,7 @@ public class PlayerPiece : MonoBehaviour
             }
         }
 
+        //is piece able to move
         if (isPathAvailableToMove(numberoOfStepsToMove, numberOfStepsAlreadyMove, pathParent_))
         {
             numberOfStepsAlreadyMove += numberoOfStepsToMove;
