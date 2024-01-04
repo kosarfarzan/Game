@@ -53,6 +53,9 @@ public class RollingDice : MonoBehaviour
             numberSpriteHolder.gameObject.SetActive(false);
             rollingDiceAnimation.gameObject.SetActive(true);
 
+            // Play the sound of dice
+            GameManager.gameManager.AudioDice();
+
             // When dice rolled, its wait and then transfer
             yield return new WaitForSeconds(0.5f);
 
@@ -187,6 +190,7 @@ public class RollingDice : MonoBehaviour
     //Make playing automation
     public bool PlayerCanMove()
     {
+        //Computer mode and computer turns, make automation
         if (GameManager.gameManager.totalPlayerCanPlay == 1)
         {
             if (GameManager.gameManager.rollingDice == GameManager.gameManager.rollingDiceList[2])
@@ -207,6 +211,7 @@ public class RollingDice : MonoBehaviour
                 }
             }
         }
+        //1 player is inside and dice !=6, continue as automation
         if (outPlayer == 1 && GameManager.gameManager.numberOfStepsToMove != 6)
         {
             for (int i = 0; i < playerPiece.Count; i++)
@@ -221,10 +226,12 @@ public class RollingDice : MonoBehaviour
                 }
             }
         }
-        else if(outPlayer == 1 && CompletePlayer == 3 && GameManager.gameManager.numberOfStepsToMove == 6)
+        //3 player had win and 1 player is inside, automation
+        else if (outPlayer == 1 && CompletePlayer == 3 && GameManager.gameManager.numberOfStepsToMove == 6)
         {
             return true;
         }
+        //no player in game and dice = 6, one player should enter the game automatic
         else if (outPlayer == 0 && GameManager.gameManager.numberOfStepsToMove == 6)
         {
             return true;
@@ -232,7 +239,7 @@ public class RollingDice : MonoBehaviour
         return false;
     }
 
-    //Check if the pieces can move or not
+    //Make player first or last player moving automatic
     public bool PlayersCanMove()
     {
         for (int i = 0; i < playerPiece.Count; i++)

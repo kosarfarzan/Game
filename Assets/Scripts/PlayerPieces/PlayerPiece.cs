@@ -67,6 +67,10 @@ public class PlayerPiece : MonoBehaviour
             if (isPathAvailableToMove(numberoOfStepsToMove, numberOfStepsAlreadyMove, pathParent_))
             {
                 transform.position = pathParent_[i].transform.position;
+
+                // Play the sound of the movement of the piece
+                GameManager.gameManager.AudioMove();
+
                 yield return new WaitForSeconds(0.25f);
             }
         }

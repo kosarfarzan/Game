@@ -95,7 +95,7 @@ public class Computer
                 //if their distance was betweeun 0 and 5 and green piece was forward the yellow piece
                 if (GreenNumberMove - YellowNumberMove <= 5 && GreenNumberMove - YellowNumberMove > 0 && GreenNumberMove > YellowNumberMove)
                 {
-                    // bigger then 52 it id in winner point
+                    // bigger then 52 it in winner point
                     if(GreenNumberMove < 52 && YellowNumberMove < 52)
                     {
                         DangerPiece = GameManager.gameManager.greenPlayerPieces[i];

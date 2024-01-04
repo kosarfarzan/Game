@@ -39,7 +39,28 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         gameManager = this;
+        audioSource = GetComponent<AudioSource>();
     }
+
+    AudioSource audioSource;
+    public AudioClip dice, move;
+
+    // Play the sound of dice
+    public void AudioDice()
+    {
+        audioSource.Stop();
+        audioSource.clip = dice;
+        audioSource.Play();
+    }
+
+    // Play the sound of the movement of the piece
+    public void AudioMove()
+    {
+        audioSource.Stop();
+        audioSource.clip = move;
+        audioSource.Play();
+    }
+
 
     // Will add the path point get from piece
     public void AddPathPoint(PathPoint pathPoint)
@@ -159,7 +180,6 @@ public class GameManager : MonoBehaviour
     IEnumerator TimerTransfer05()
     {
         yield return new WaitForSeconds(0.5f);
-        transferDice = true;
         transferRollingDice();
     }
 

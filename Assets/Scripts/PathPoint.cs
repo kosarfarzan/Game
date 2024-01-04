@@ -67,6 +67,10 @@ public class PathPoint : MonoBehaviour
         for (int i = playerPiece_.numberOfStepsAlreadyMove-1; i >= 0; i--)
         {
             playerPiece_.transform.position = pathPointToMoveOn_[i].transform.position;
+
+            // Play the sound of the movement of the piece
+            GameManager.gameManager.AudioMove();
+
             yield return new WaitForSeconds(0.06f);
         }
 
