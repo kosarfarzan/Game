@@ -33,6 +33,10 @@ public class PlayerPiece : MonoBehaviour
     {
         isReady = true;
         Status = "Game";
+
+        // Play the sound of the movement of the piece
+        GameManager.gameManager.AudioMove();
+
         // Start point position
         transform.position = pathParent_[0].transform.position;
         // When we click on piece, it goes on first pathpoint
