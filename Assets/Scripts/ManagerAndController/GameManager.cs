@@ -36,6 +36,8 @@ public class GameManager : MonoBehaviour
     // Object created from the Computer class
     public Computer computer = new Computer();
 
+    bool EndGame = false;
+
     private void Awake()
     {
         gameManager = this;
@@ -80,24 +82,27 @@ public class GameManager : MonoBehaviour
     // Transfering dice 
     public void rollingDiceTransfer()
     {
-        if (transferDice)
+        if(EndGame == false)
         {
-            GameManager.gameManager.totalSix = 0;
-            transferRollingDice();
-        }
-        else
-        {
-            if (GameManager.gameManager.totalPlayerCanPlay == 1)
+            if (transferDice)
             {
-                //For playing with computer
-                if (GameManager.gameManager.rollingDice == GameManager.gameManager.rollingDiceList[2])
+                GameManager.gameManager.totalSix = 0;
+                transferRollingDice();
+            }
+            else
+            {
+                if (GameManager.gameManager.totalPlayerCanPlay == 1)
                 {
-                    Invoke("Role", 0.6f);
+                    //For playing with computer
+                    if (GameManager.gameManager.rollingDice == GameManager.gameManager.rollingDiceList[2])
+                    {
+                        Invoke("Role", 0.6f);
+                    }
                 }
             }
+            canDiceRoll = true;
+            transferDice = false;
         }
-        canDiceRoll = true;
-        transferDice = false;
     }
 
     void Role()
@@ -203,6 +208,7 @@ public class GameManager : MonoBehaviour
         {
             if(greenCompletePlayer == 4)
             {
+                EndGame = true;
                 win[0].GetComponent<Image>().color = Color.green;
                 win[0].transform.GetChild(0).GetComponent<Text>().text = "Computer";
                 win[1].SetActive(false);
@@ -211,6 +217,7 @@ public class GameManager : MonoBehaviour
             }
             else if(yellowCompletePlayer == 4)
             {
+                EndGame = true;
                 win[0].GetComponent<Image>().color = Color.yellow;
                 win[0].transform.GetChild(0).GetComponent<Text>().text = "Human";
                 win[1].SetActive(false);
@@ -222,6 +229,7 @@ public class GameManager : MonoBehaviour
         {
             if (greenCompletePlayer == 4)
             {
+                EndGame = true;
                 win[0].GetComponent<Image>().color = Color.green;
                 win[0].transform.GetChild(0).GetComponent<Text>().text = "Player1";
                 win[1].SetActive(false);
@@ -230,6 +238,7 @@ public class GameManager : MonoBehaviour
             }
             else if (yellowCompletePlayer == 4)
             {
+                EndGame = true;
                 win[0].GetComponent<Image>().color = Color.yellow;
                 win[0].transform.GetChild(0).GetComponent<Text>().text = "Player1";
                 win[1].SetActive(false);
@@ -249,6 +258,7 @@ public class GameManager : MonoBehaviour
                 win[2].SetActive(false);
                 if(WinNum == 1)
                 {
+                    EndGame = true;
                     panel.SetActive(true);
                 }
             }
@@ -260,6 +270,7 @@ public class GameManager : MonoBehaviour
                 win[2].SetActive(false);
                 if (WinNum == 1)
                 {
+                    EndGame = true;
                     panel.SetActive(true);
                 }
             }
@@ -271,6 +282,7 @@ public class GameManager : MonoBehaviour
                 win[2].SetActive(false);
                 if (WinNum == 1)
                 {
+                    EndGame = true;
                     panel.SetActive(true);
                 }
             }
@@ -284,6 +296,7 @@ public class GameManager : MonoBehaviour
                 win[WinNum].transform.GetChild(0).GetComponent<Text>().text = "Player" + (WinNum + 1);
                 if (WinNum == 2)
                 {
+                    EndGame = true;
                     panel.SetActive(true);
                 }
             }
@@ -294,6 +307,7 @@ public class GameManager : MonoBehaviour
                 win[WinNum].transform.GetChild(0).GetComponent<Text>().text = "Player" + (WinNum + 1);
                 if (WinNum == 2)
                 {
+                    EndGame = true;
                     panel.SetActive(true);
                 }
             }
@@ -304,6 +318,7 @@ public class GameManager : MonoBehaviour
                 win[WinNum].transform.GetChild(0).GetComponent<Text>().text = "Player" + (WinNum + 1);
                 if (WinNum == 2)
                 {
+                    EndGame = true;
                     panel.SetActive(true);
                 }
             }
@@ -314,6 +329,7 @@ public class GameManager : MonoBehaviour
                 win[WinNum].transform.GetChild(0).GetComponent<Text>().text = "Player" + (WinNum + 1);
                 if (WinNum == 2)
                 {
+                    EndGame = true;
                     panel.SetActive(true);
                 }
             }
@@ -338,6 +354,7 @@ public class GameManager : MonoBehaviour
         greenCompletePlayer = 0;
         blueCompletePlayer = 0;
         totalSix = 0;
+        EndGame = false;
         rollingDiceList[0].gameObject.SetActive(true);
         rollingDiceList[1].gameObject.SetActive(false);
         rollingDiceList[2].gameObject.SetActive(false);

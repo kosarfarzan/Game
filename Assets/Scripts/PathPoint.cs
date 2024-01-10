@@ -56,7 +56,7 @@ public class PathPoint : MonoBehaviour
         else if(playerPiece_.name.Contains("Red")) { GameManager.gameManager.redOutPlayer -= 1; pathPointToMoveOn_ = pathObjectParent.RedPathPoint; }
         else if(playerPiece_.name.Contains("Green")) { GameManager.gameManager.greenOutPlayer -= 1; pathPointToMoveOn_ = pathObjectParent.GreenPathPoint; }
         else { GameManager.gameManager.blueOutPlayer -= 1; pathPointToMoveOn_ = pathObjectParent.BluePathPoint; }
-        if(GameManager.gameManager.numberOfStepsToMove != 6 && GameManager.gameManager.totalPlayerCanPlay == 1 && GameManager.gameManager.rollingDice == GameManager.gameManager.rollingDiceList[2])
+        if(GameManager.gameManager.numberOfStepsToMove != 6)
         {
             GameManager.gameManager.transferDice = true;
         }
